@@ -1,11 +1,11 @@
-package com.springboot.spring_boot
+package com.springboot.spring_boot1
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class Application
+class SpringBoot1Application
 
 fun main(args: Array<String>) {
-	runApplication<Application>(*args)
+	runApplication<SpringBoot1Application>(*args)
 }
