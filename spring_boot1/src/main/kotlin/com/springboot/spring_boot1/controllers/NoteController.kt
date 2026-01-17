@@ -1,10 +1,12 @@
 package com.springboot.spring_boot1.controllers
 
 import com.springboot.spring_boot1.controllers.NoteController.NoteResponse
-import com.springboot.spring_boot1.database.NoteRepository
+import com.springboot.spring_boot1.database.repository.NoteRepository
 import com.springboot.spring_boot1.database.model.Note
 import org.bson.types.ObjectId
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,6 +16,7 @@ import java.time.Instant
 
 //POST http://localhost:8085/notes
 //GET http://localhost:80885/notes?ownerID=123
+//DELETE http://localhost:8085/notes/123
 
 
 @RestController
@@ -60,11 +63,15 @@ class NoteController(
     fun findByOwnerId(
         @RequestParam(required = true) ownerId: String
     ): List<NoteResponse> {
-        return repository.findByOwnerId(ObjectId()).map {
+        return repository.findByOwnerId(ObjectId(ownerId)).map {
             it.toRespnose()
         }
     }
 
+    @DeleteMapping(path=["/{id}"])
+    fun deleteById(@PathVariable id: String){
+        repository.deleteById(ObjectId(id))
+    }
 }
 
 private fun Note.toRespnose(): NoteController.NoteResponse{
