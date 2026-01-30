@@ -2,45 +2,45 @@ package com.snehil.module2.controllers;
 
 import com.snehil.module2.dto.EmployeeDTO;
 import com.snehil.module2.entities.EmployeeEntity;
-import com.snehil.module2.repository.EmployeeRepository;
+import com.snehil.module2.services.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    public final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     // GET by ID
     @GetMapping("/{employeeId}")
-    public EmployeeEntity getEmployeeById(@PathVariable Long employeeId) {
-        return employeeRepository.findById(employeeId).orElse(null);
+    public EmployeeDTO getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployedById(id);
     }
 
     // GET all
     @GetMapping
-    public List<EmployeeEntity> getAllEmployees(
+    public List<EmployeeDTO> getAllEmployees(
             @RequestParam(required = false) Integer age,
             @RequestParam(required = false) String sortBy) {
-        return employeeRepository.findAll();
+        return employeeService.getAllEmployees();
     }
 
     // POST
     @PostMapping
-    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee) {
-        return employeeRepository.save(inputEmployee);
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee) {
+        return employeeService.createNewEmployee(inputEmployee);
     }
 
     // PUT
-    @PutMapping("/{employeeId}")
-    public String updateEmployeeById(@PathVariable Long employeeId) {
-        return "Hello from PUT " + employeeId;
+
+    @PutMapping(path = "/employeeId")
+    public EmployeeDTO updateEmployeeById(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long employeeId){
+        return employeeService.updateEmployeeById(employeeId, employeeDTO);
     }
 }
