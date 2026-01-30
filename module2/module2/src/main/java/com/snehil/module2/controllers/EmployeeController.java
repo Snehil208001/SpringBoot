@@ -39,8 +39,16 @@ public class EmployeeController {
 
     // PUT
 
-    @PutMapping(path = "/employeeId")
+    @PutMapping(path = "/{employeeId}")
     public EmployeeDTO updateEmployeeById(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long employeeId){
         return employeeService.updateEmployeeById(employeeId, employeeDTO);
     }
+
+    //Delete
+
+    @DeleteMapping(path = "/{employeeId")
+    public void deleteEmployeeById(@PathVariable Long employeeId){
+        employeeService.eleteEmployeeById(employeeId);
+    }
+
 }
