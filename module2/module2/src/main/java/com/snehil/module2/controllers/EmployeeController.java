@@ -1,38 +1,46 @@
 package com.snehil.module2.controllers;
 
 import com.snehil.module2.dto.EmployeeDTO;
+import com.snehil.module2.entities.EmployeeEntity;
+import com.snehil.module2.repository.EmployeeRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/employees")
+@RequestMapping("/employees")
 public class EmployeeController {
 
-//    @GetMapping(path = "/getSecretMessage")
-//    public String getMySuperSecretMessage(){
-//        return "Secret message: I Love You ";
-//    }
+    private final EmployeeRepository employeeRepository;
 
-    @GetMapping(path = "/employees/{employeeId}")
-    public EmployeeDTO getEmployeeById(@PathVariable Long employeeId){
-        return new EmployeeDTO(employeeId,"Snehil","snehil@gmail.com",25, LocalDate.of(2026,1,24),true);
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    @GetMapping(path = "/employees")
-    public String getAllEmployees(@RequestParam(required = false) Integer age,
-                                  @RequestParam(required = false) String sortBy){
-        return "Hi age " + age + " "+sortBy;
+    // GET by ID
+    @GetMapping("/{employeeId}")
+    public EmployeeEntity getEmployeeById(@PathVariable Long employeeId) {
+        return employeeRepository.findById(employeeId).orElse(null);
     }
 
+    // GET all
+    @GetMapping
+    public List<EmployeeEntity> getAllEmployees(
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) String sortBy) {
+        return employeeRepository.findAll();
+    }
+
+    // POST
     @PostMapping
-    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
-        inputEmployee.setId(100L);
-        return inputEmployee;
+    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee) {
+        return employeeRepository.save(inputEmployee);
     }
 
-    @PutMapping String updateEmployeeById(){
-        return "Hello from PUT";
+    // PUT
+    @PutMapping("/{employeeId}")
+    public String updateEmployeeById(@PathVariable Long employeeId) {
+        return "Hello from PUT " + employeeId;
     }
 }
