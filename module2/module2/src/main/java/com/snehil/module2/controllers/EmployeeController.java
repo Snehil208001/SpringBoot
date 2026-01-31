@@ -30,7 +30,7 @@ public class EmployeeController {
         Optional<EmployeeDTO> employeeDTO = employeeService.getEmployedById(employeeId);
         return employeeDTO
                 .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: "+employeeId));
     }
 
 
@@ -60,8 +60,8 @@ public class EmployeeController {
     @DeleteMapping(path = "/{employeeId}")
     public ResponseEntity<Boolean> deleteEmployeeById(@PathVariable Long employeeId) {
        boolean gotDeleted = employeeService.deleteEmployeeById(employeeId);
-       if (gotDeleted) return  ResponseEntity.ok(true);
-       return ResponseEntity.notFound().build();
+       if (gotDeleted) throw new ResourceNotFoundException("Employee not Found with id: "+employeeId);
+           return  ResponseEntity.ok(true);
     }
 
     // Patch
