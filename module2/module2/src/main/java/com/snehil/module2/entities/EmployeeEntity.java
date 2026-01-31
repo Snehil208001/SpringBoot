@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "employees")
 public class EmployeeEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,10 +19,9 @@ public class EmployeeEntity {
     private String email;
     private Integer age;
     private LocalDate dateOfJoining;
-    private boolean isActive;
 
-    public void setId(Long id) {
-        this.id = id;
+    private boolean isActive;  // Remove @JsonProperty from entity
+
+    public void setId(Long employeeId) {
     }
-
 }
