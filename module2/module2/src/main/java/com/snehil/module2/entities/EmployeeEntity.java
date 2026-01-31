@@ -19,8 +19,10 @@ public class EmployeeEntity {
     private String email;
     private Integer age;
     private LocalDate dateOfJoining;
+    private Double salary;
 
     private boolean isActive;  // Remove @JsonProperty from entity
+    private String role;
 
     public void setId(Long employeeId) {
     }
